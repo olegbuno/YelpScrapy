@@ -62,6 +62,7 @@ class YelpSpider(scrapy.Spider):
         website_href = response.xpath(
             './/p[contains(@class, "css-1p9ibgf")]//a[contains(@class, "css-1idmmu3")]/@href').get()
         decoded_url = unquote_plus(website_href) if website_href else ""  # Decode the URL
+
         website = ""
         if decoded_url:
             domain_match = re.search(r'https?://([^/?&]+)', decoded_url)  # Extract the domain
@@ -76,7 +77,6 @@ class YelpSpider(scrapy.Spider):
         }
 
         review_block = response.xpath('.//div[@id="reviews"]//li[contains(@class, "css-1q2nwpv")]')
-
         item['reviews'] = []
         for review in review_block[:5]:
             reviewer_name = review.xpath('.//a[contains(@class, "css-19v1rkv")]/text()').get()
